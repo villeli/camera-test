@@ -5,17 +5,99 @@
 	<title>Document</title>
 </head>
 <body>
-	<div>
-		<h2>移动端上传图片</p>
-		<input type="file" accept="image/*">
-	</div>
-	<div>
-		<h2>移动端调用后置摄像头</p>
-		<input type="file" capture="camera" accept="image/*">
-	</div>
-	<div>
-		<h2>移动端调用前置摄像头</p>
-		<input type="file" capture="user" accept="image/*">
+	<div id="app">
+		<div class="box">
+			<h2>PC端调取摄像头</h2>
+			<div>
+		    	<button @click="openVideo">打开摄像头</button>
+		    	<button @click="getPhoto">拍照</button>
+		    	<button @click="upload">上传</button>
+		    	<div>
+			      	<video src="" ref="myVideo" :width="width" :height="height"></video>
+			    </div>
+			    <div>
+			     	<canvas ref="myCanvas" :width="width" :height="height"></canvas>
+			    </div>
+			    <div :style="{wordWrap: 'break-word'}">
+			     	<span>
+			    		{{ base64Data }}
+			     	</span>
+			    </div>
+			</div>
+	  	</div>
+	  	<div class="box">
+	  		<h2>移动端调取摄像头</h2>
+	  		<div>
+	  			<button @click="openCamera1">打开后置摄像头</button>
+	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;">
+	  			<button @click="openCamera2">打开前置摄像头</button>
+	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;">
+	  		</div>
+	  	</div>
 	</div>
 </body>
+<script src="./js/vue.js" type="text/javascript"></script>
+<script>
+	var app = new Vue({
+		el: '#app',
+		data: {
+	  		context: null,
+	    	width: 300,
+	    	height: 200,
+	    	base64Data: '',
+	    	pcCamera: true
+	  	},
+	  	computed: {
+			myCanvas () {
+      			return this.$refs.myCanvas
+    		},
+    		myVideo () {
+      			return this.$refs.myVideo
+    		}
+  		},
+  		methods: {
+    		openVideo () {
+      			if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        			navigator.mediaDevices.getUserMedia({
+          				video: true,
+          				audio: false // 音频关闭状态
+        			}).then((stream) => {
+		      			this.myVideo.srcObject = stream
+		          		this.myVideo.play()
+        			}).catch(err => {
+          				console.log('err', err)
+        			})
+      			}
+    		},
+			getPhoto () {
+  				this.context = this.myCanvas.getContext('2d')
+  				this.context.drawImage(this.myVideo, 0, 0, this.width, this.height)
+			},
+			upload () {
+      			this.base64Data = this.myCanvas.toDataURL('image/png')
+      			console.log('调接口', this.base64Data)
+    		},
+    		openCamera1 () {
+    			this.$refs.mobileCamera1.click()
+    		},
+    		openCamera2 () {
+    			this.$refs.mobileCamera2.click()
+    		}
+  		}
+	})
+</script>
+<style>
+	.box {
+		width: 400px;
+		float: left;
+	}
+	button {
+		border: none;
+		border-radius: 3px;
+		background-color: #364fbb;
+		color: #fff;
+		padding: 5px 10px;
+		margin-bottom: 10px;
+	}
+</style>
 </html>
