@@ -29,9 +29,9 @@
 	  		<h2>移动端调取摄像头</h2>
 	  		<div>
 	  			<button @click="openCamera1">打开后置摄像头</button>
-	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;" @change="getphoto2">
+	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;" @change="onFileChange">
 	  			<button @click="openCamera2">打开前置摄像头</button>
-	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;" @change="getphoto2">
+	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;" @change="onFileChange">
 	  			<div>
 			     	<canvas ref="myCanvas2" :width="width" :height="height"></canvas>
 			    </div>
