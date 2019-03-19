@@ -27,11 +27,15 @@
 	  	</div>
 	  	<div class="box">
 	  		<h2>移动端调取摄像头</h2>
-	  		<div>
+	  		<div v-if="false">
 	  			<button @click="openCamera1">打开后置摄像头</button>
 	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;">
 	  			<button @click="openCamera2">打开前置摄像头</button>
 	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;">
+	  		</div>
+	  		<div>
+	  			<button @click="getCamera">打开后置摄像头</button>
+	  			<p>{{ mobilePath }}</p>
 	  		</div>
 	  	</div>
 	</div>
@@ -45,6 +49,7 @@
 	    	width: 300,
 	    	height: 200,
 	    	base64Data: '',
+	    	mobilePath: '',
 	    	pcCamera: true
 	  	},
 	  	computed: {
@@ -82,7 +87,19 @@
     		},
     		openCamera2 () {
     			this.$refs.mobileCamera2.click()
-    		}
+    		},
+    		getCamera(e){
+                var that = this
+                plus.camera.getCamera().captureImage(function(e){
+                    console.log(e)
+                    plus.io.resolveLocalFileSystemURL(e, function(entry) {
+                        this.mobilePath = entry.toLocalURL()
+                    }, function(e) {
+//                        mui.toast("读取拍照文件错误：" + e.message);
+                    });
+
+                });
+            },
   		}
 	})
 </script>
