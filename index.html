@@ -100,7 +100,9 @@
     			this.$refs.mobileCamera2.click()
     		},
     		onFileChange (e) {
-144         	alert(1)
+144         	var files = e.target.files || e.dataTransfer.files;
+144         	if (!files.length) return;
+145         	this.imgsrc = files[0];		// File对象
 154         },
     		getCamera (e) {		// 浏览器调试无效，需要搭建APP环境
                 var that = this
@@ -110,10 +112,10 @@
                         this.mobilePath = entry.toLocalURL()
                     }, function(e) {
 //                        mui.toast("读取拍照文件错误：" + e.message);
-                    });
+                    })
 
-                });
-            },
+                })
+            }
   		}
 	})
 </script>
