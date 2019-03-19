@@ -29,7 +29,7 @@
 	  		<h2>移动端调取摄像头</h2>
 	  		<div>
 	  			<button @click="openCamera1">打开后置摄像头</button>
-	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;" @change="onFileChange">
+	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;">
 	  			<button @click="openCamera2">打开前置摄像头</button>
 	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;">
 	  			<div>
@@ -94,12 +94,7 @@
     		},
     		openCamera2 () {
     			this.$refs.mobileCamera2.click()
-    		},
-    		onFileChange (e) {
-144         	var files = e.target.files || e.dataTransfer.files;
-144         	if (!files.length) return;
-145         	this.imgsrc = files[0];		// File对象
-154         }
+    		}
   		}
 	})
 </script>
