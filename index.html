@@ -100,9 +100,8 @@
     			this.$refs.mobileCamera2.click()
     		},
     		onFileChange(e){
-143         	var files = e.target.files || e.dataTransfer.files
-144         	if (!files.length) return
-145         	this.imgsrc = files[0]		//File对象
+144         	if (!e.target.files.length) return
+145         	this.imgsrc = e.target.files[0]		//File对象
 154         },
     		getCamera (e) {		// 浏览器调试无效，需要搭建APP环境
                 var that = this
