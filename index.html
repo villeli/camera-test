@@ -27,14 +27,17 @@
 	  	</div>
 	  	<div class="box">
 	  		<h2>移动端调取摄像头</h2>
-	  		<div v-if="false">
+	  		<div>
 	  			<button @click="openCamera1">打开后置摄像头</button>
-	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;">
+	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;" @change="getphoto2">
 	  			<button @click="openCamera2">打开前置摄像头</button>
 	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;">
+	  			<div>
+			     	<canvas ref="myCanvas2" :width="width" :height="height"></canvas>
+			    </div>
 	  		</div>
-	  		<div>
-	  			<button @click="getCamera">打开后置摄像头</button>
+	  		<div v-if="false">
+	  			<button @click="getCamera">用plus方法调用摄像头</button>
 	  			<p>{{ mobilePath }}</p>
 	  		</div>
 	  	</div>
@@ -55,6 +58,9 @@
 	  	computed: {
 			myCanvas () {
       			return this.$refs.myCanvas
+    		},
+    		myCanvas2 () {
+      			return this.$refs.myCanvas2
     		},
     		myVideo () {
       			return this.$refs.myVideo
@@ -78,6 +84,9 @@
   				this.context = this.myCanvas.getContext('2d')
   				this.context.drawImage(this.myVideo, 0, 0, this.width, this.height)
 			},
+			getphoto2 () {
+				alert(1)
+			},
 			upload () {
       			this.base64Data = this.myCanvas.toDataURL('image/png')
       			console.log('调接口', this.base64Data)
@@ -88,7 +97,7 @@
     		openCamera2 () {
     			this.$refs.mobileCamera2.click()
     		},
-    		getCamera(e){
+    		getCamera (e) {		// 浏览器调试无效，需要搭建APP环境
                 var that = this
                 plus.camera.getCamera().captureImage(function(e){
                     console.log(e)
