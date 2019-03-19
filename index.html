@@ -100,15 +100,15 @@
     			this.$refs.mobileCamera2.click()
     		},
     		onFileChange(e){
-142         	var self = this;
-143         	var files = e.target.files || e.dataTransfer.files;
-144         	if (!files.length) return;
-145         	var file = files[0];//File对象
-146         	self.uploadFile = file;
-147         	var reader = new FileReader();//FileReader对象
-148             	reader.readAsDataURL(file);//该方法会读取指定的 Blob 或 File 对象。读取操作完成的时候，readyState 会变成已完成（DONE），并触发 loadend 事件，同时 result 属性将包含一个data:URL格式的字符串（base64编码）以表示所读取文件的内容。
+142         	var self = this
+143         	var files = e.target.files || e.dataTransfer.files
+144         	if (!files.length) return
+145         	var file = files[0]		//File对象
+146         	self.uploadFile = file
+147         	var reader = new FileReader()		//FileReader对象
+148             	reader.readAsDataURL(file)		//该方法会读取指定的 Blob 或 File 对象。读取操作完成的时候，readyState 会变成已完成（DONE），并触发 loadend 事件，同时 result 属性将包含一个data:URL格式的字符串（base64编码）以表示所读取文件的内容。
 150             	reader.onload = function(e){
-151             	self.imgsrc= e.target.result;//图片内容的base64编码
+151             	self.imgsrc = e.target.result		//图片内容的base64编码
 153             }
 154         },
     		getCamera (e) {		// 浏览器调试无效，需要搭建APP环境
