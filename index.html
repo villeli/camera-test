@@ -31,9 +31,12 @@
 	  			<button @click="openCamera1">打开后置摄像头</button>
 	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;" @change="getphoto2">
 	  			<button @click="openCamera2">打开前置摄像头</button>
-	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;">
+	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;" @change="getphoto2">
 	  			<div>
 			     	<canvas ref="myCanvas2" :width="width" :height="height"></canvas>
+			    </div>
+			    <div>
+			     	{{ imgsrc }}
 			    </div>
 	  		</div>
 	  		<div v-if="false">
@@ -49,10 +52,12 @@
 		el: '#app',
 		data: {
 	  		context: null,
+	  		context2: null,
 	    	width: 300,
 	    	height: 200,
 	    	base64Data: '',
 	    	mobilePath: '',
+	    	imgsrc: '',
 	    	pcCamera: true
 	  	},
 	  	computed: {
@@ -84,9 +89,6 @@
   				this.context = this.myCanvas.getContext('2d')
   				this.context.drawImage(this.myVideo, 0, 0, this.width, this.height)
 			},
-			getphoto2 () {
-				alert(1)
-			},
 			upload () {
       			this.base64Data = this.myCanvas.toDataURL('image/png')
       			console.log('调接口', this.base64Data)
@@ -97,6 +99,18 @@
     		openCamera2 () {
     			this.$refs.mobileCamera2.click()
     		},
+    		onFileChange(e){
+142         	let self = this;
+143         	let files = e.target.files || e.dataTransfer.files;
+144         	if (!files.length) return;
+145         	let file = files[0];//File对象
+146         	self.uploadFile = file;
+147         	let reader = new FileReader();//FileReader对象
+148             	reader.readAsDataURL(file);//该方法会读取指定的 Blob 或 File 对象。读取操作完成的时候，readyState 会变成已完成（DONE），并触发 loadend 事件，同时 result 属性将包含一个data:URL格式的字符串（base64编码）以表示所读取文件的内容。
+150             	reader.onload = function(e){
+151             	self.imgsrc= e.target.result;//图片内容的base64编码
+153             }
+154         },
     		getCamera (e) {		// 浏览器调试无效，需要搭建APP环境
                 var that = this
                 plus.camera.getCamera().captureImage(function(e){
