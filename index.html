@@ -29,14 +29,14 @@
 	  		<h2>移动端调取摄像头</h2>
 	  		<div>
 	  			<button @click="openCamera1">打开后置摄像头</button>
-	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;">
+	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;" @change="onFileChange">
 	  			<button @click="openCamera2">打开前置摄像头</button>
 	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;">
 	  			<div>
 			     	<canvas ref="myCanvas2" :width="width" :height="height"></canvas>
 			    </div>
-			    <div>
-			     	{{ imgsrc }}
+			    <div v-show="show">
+			    	{{ imgsrc }}
 			    </div>
 	  		</div>
 	  	</div>
@@ -54,7 +54,8 @@
 	    	base64Data: '',
 	    	mobilePath: '',
 	    	imgsrc: '',
-	    	pcCamera: true
+	    	pcCamera: true,
+	    	show: false
 	  	},
 	  	computed: {
 			myCanvas () {
@@ -94,6 +95,19 @@
     		},
     		openCamera2 () {
     			this.$refs.mobileCamera2.click()
+    		},
+    		onFileChange (e) {
+    			var file = e.target.files[0]; 
+			    if(!/image\/\w+/.test(file.type)){ 
+			        alert("文件必须为图片！"); 
+			        return false; 
+			    } 
+			    var reader = new FileReader(); 
+			    reader.readAsDataURL(file); 
+			    reader.onload = function(e){ 
+			        this.imgsrc = e.target.result
+			        this.show = true
+			    }
     		}
   		}
 	})
