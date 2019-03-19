@@ -32,12 +32,10 @@
 	  			<input ref="mobileCamera1" type="file" capture="camera" accept="image/*"/ style="display:none;" @change="onFileChange">
 	  			<button @click="openCamera2">打开前置摄像头</button>
 	  			<input ref="mobileCamera2" type="file" capture="user" accept="image/*"/ style="display:none;">
-	  			<div>
-			     	<canvas ref="myCanvas2" :width="width" :height="height"></canvas>
+			    <div>
+			    	<img ref="mobileImg">
 			    </div>
-			    <div v-show="show">
-			    	{{ imgsrc }}
-			    </div>
+			    <div id="result" :style="{wordWrap: 'break-word'}"></div>
 	  		</div>
 	  	</div>
 	</div>
@@ -52,7 +50,7 @@
 	    	width: 300,
 	    	height: 200,
 	    	base64Data: '',
-	    	mobilePath: '',
+	    	previewImg: '',
 	    	imgsrc: '',
 	    	pcCamera: true,
 	    	show: false
@@ -98,15 +96,17 @@
     		},
     		onFileChange (e) {
     			var file = e.target.files[0]; 
+    			this.$refs.mobileImg.src = URL.createObjectURL(file)
 			    if(!/image\/\w+/.test(file.type)){ 
 			        alert("文件必须为图片！"); 
 			        return false; 
 			    } 
+			    var result = document.getElementById("result")
+			    console.log(this.$refs.mobileImg)
 			    var reader = new FileReader(); 
 			    reader.readAsDataURL(file); 
 			    reader.onload = function(e){ 
-			        this.imgsrc = e.target.result
-			        this.show = true
+			        result.innerHTML = e.target.result
 			    }
     		}
   		}
